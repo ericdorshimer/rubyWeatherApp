@@ -4,11 +4,20 @@
 #weatherApp_main.new
 
 #7day weather, high and low temps.
-weatherApp_main.RubyWeather.findLocation()
 
-weatherApp_main.RubyWeather.geocodeLocation()
+#require_relative "./weatherApp_main" 
 
-forcast = weatherApp_main.RubyWeather.findWeather()
+#$weatherObj = require_relative "./weatherApp_main"
 
-puts forcast
+#def testWeather()
+#    $weatherObj.RubyWeather.findLocation()
 
+ #   $weatherObj.RubyWeather.geocodeLocation()
+
+  #  forcast = $weatherObj.RubyWeather.findWeather()
+
+   # puts forcast
+
+#end
+
+#testWeather()

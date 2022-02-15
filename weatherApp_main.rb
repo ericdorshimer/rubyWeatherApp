@@ -5,36 +5,43 @@ require "net/http"
 require 'uri'
 require 'rubygems'
 
-class RubyWeather()
-
-
-    #getting users IP address for location
-    def findLocation()
-
-    ip = Net::HTTP.get(URI("https://ip-fast.com/api/ip/"))
-
-        return ip
-    end
-
-
+class RubyWeather
     #geocodeing below
-    def geocodeLocation(ip)
+    def geocodeLocation()
+        ip = Net::HTTP.get(URI("https://ip-fast.com/api/ip/"))# returns a ip address, but needs to be city and street
+     
+        #-------------------------------------------------------
+
         uri = URI('https://geocode.xyz')
 
-        parameters = { :ip}
 
-        uri.query = URI.encode_www_form(parameters)
+        params = {'auth' => '11328715023974279708x121884', 'locate' => 'ip' , 'geoit' => 'JSON'} # need to connect "ip" address to the locate field here
+
+        uri.query = URI.encode_www_form(params)
 
         response = Net::HTTP.get_response(uri)
+
+        puts "Geocode--------------------------------------------------------------------------------------------------------"
+
+        puts response.read_body
+
         return response
     end
 
 
     # daily weather 7 day forcast
-    def findWeather(response)
+    def findWeather()
 
         uriWeather = URI('https://api.open-meteo.com/v1/forecast?latitude=35.74&longitude=-78.86&hourly=temperature_2m')
 
-        localWeather = Net::Http.get_response(uriWeather)
+        localWeather = Net::HTTP.get_response(uriWeather)
+
+        puts "local Weather--------------------------------------------------------------------------------------------------"
+        
+        puts localWeather.read_body
     end
 end
+
+weatherOBJ = RubyWeather.new
+weatherOBJ.geocodeLocation()
+weatherOBJ.findWeather()
