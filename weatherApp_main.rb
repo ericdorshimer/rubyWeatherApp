@@ -1,48 +1,50 @@
 #!/Users/ericd/eclipse-workspace/vendingMachineJSON/src/rubyWeatherApp/weatherApp_main.rb env ruby
 
 require "net/http"
-require 'uri'
-require 'rubygems'
-require 'json'
+require 'URI'
+require 'JSON'
+
 
 class RubyWeather
 
-    def runRubyWeather()
+    def runRubyWeather() # run method calling find IP and find LatLong methods
+        
         city = findIP()
         findLatLong(city)
     end
     def findIP()
-        ip_response = Net::HTTP.get(URI("https://ip-fast.com/api/ip/?format=json&location=true"))# returns a ip address, but needs to be city and street
+        
+        ip_response = Net::HTTP.get(URI("https://ip-fast.com/api/ip/?format=json&location=true"))
 
         obj = JSON.parse(ip_response)
         city = obj['city']
-        country = obj['country']
     
         puts city
-       
+       return city
     end
 
     #geocodeing below
     def findLatLong(city)
+        
         uri = URI('https://geocode.xyz')
 
         params = {'auth' => '11328715023974279708x121884',
              'locate' => city ,
               'geoit' => 'JSON'}
 
-        uri.query = URI.encode_www_form(params)
+        uri.query = URI.encode_www_form(params) # quering above parameters to find code
 
-        response = Net::HTTP.get_response(uri)
+        response = Net::HTTP.get(uri) # getting response from query
 
-        longLatt = JSON.parse(response)
+        longLatt = JSON.parse(response) # parsing JSON object for location
 
         puts 'Enter your state/province' # asking user for state/province located
-        province = gets
-
+        province STDIN.gets.chomp
+        
         for entry in response do # making sure the correct state is selected
             
             obj = JSON.parse(entry)
-            if obj['prov'] == province
+            if obj['prov'] == province# boolean statment to determin correct state
                 longitude = obj['longt']
                 latitude = obj['latt']
             end
@@ -55,7 +57,7 @@ class RubyWeather
     end
 
     # get max and min, and print temperatures
-    def findWeather(latitude, longitude)
+    def findWeather(latitude, longitude)  
 
         uriWeather = URI(' https://api.open-meteo.com/v1/forecast?latitude=35.7283965808238&longitude=-78.8777207962151&daily=temperature_2m_max,temperature_2m_min&current_weather=true&temperature_unit=fahrenheit&timezone=America%2FNew_York
             ')
@@ -69,18 +71,18 @@ class RubyWeather
             'timezone' => 'America%2FNew_York'
         }
 
-        uri.query = URI.encode_www_form(params)
+        uri.query = URI.encode_www_form(params) # quering the parmeters from above
 
-        localWeather = Net::HTTP.get_response(uri)
+        localWeather = Net::HTTP.get(uri) # getting response from above query
 
         obj = JSON.parse(localWeather) # 7 day high and low forcast
         max_seven = obj['daily']['temperature_2m_max']
         min_seven = obj['daily']['temperature_2m_min']
 
-        for index in max_seven do
+        for index in max_seven do # for loop for 7 day week
             puts index
 
-            intArray = Array.new(7)
+            intArray = Array.new(7)# array to store the 7 day high and lows
             for i in 0..7 do
                 puts intArray(i)
                 i = i + 1
@@ -88,4 +90,6 @@ class RubyWeather
         end
     end
 end
-RubyWeather.runRubyWeather()
+
+obj = RubyWeather.new # creating a new ruby object !!!!!!!!!THIS IS WHERE THE CODE STARTS!!!!!!!!
+obj.runRubyWeather # using this object to call my run method
