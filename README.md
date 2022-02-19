@@ -1,4 +1,6 @@
 # rubyWeatherApp
+Eric Dorshimer 2/18/2022
+
 A program that utilizes external APIs for local weather.
 
 This program starts with calling a run method from the object created at the bottom of code.
