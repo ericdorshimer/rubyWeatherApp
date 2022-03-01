@@ -78,8 +78,8 @@ class RubyWeather
 
         obj_weather = JSON.parse(localWeather)
 
-        max_seven = obj_weather["temperature_2m_max"] 
-        min_seven = obj_weather["temperature_2m_min"]
+        max_seven = obj_weather['daily']['temperature_2m_max'] 
+        min_seven = obj_weather['daily']['temperature_2m_min']
          puts max_seven
          puts min_seven
 
